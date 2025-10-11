@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEGANOX - النظام المظلم</title>
+    <style>
+        /* إعدادات أساسية */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Terminus', 'Courier New', monospace;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        body {
+            background: #000000;
+            color: #00ff00;
+            overflow: hidden;
+            cursor: none !important;
+        }
+
+        /* المؤشر المخفي */
+        #custom-cursor {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: #ff0000;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            mix-blend-mode: difference;
+        }
+
+        /* الشاشة الكاملة */
+        #fullscreen-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* تأثيرات المطر الرقمي */
+        #matrix-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* الرأس المخيف */
+        header {
+            background: linear-gradient(135deg, #000000 0%, #1a001a 100%);
+            padding: 30px;
+            text-align: center;
+            border-bottom: 3px solid #ff0000;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .neganox-title {
+            font-size: 4em;
+            font-weight: 900;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 3s ease infinite, glitch 2s infinite;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        /* المحتوى الرئيسي */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* شبكة الخدمات */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+
+        .service-card {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            padding: 25px;
+            border-radius: 8px;
+            transition: all 0.4s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff0000, #00ff00, #0000ff, #ff0000);
+            background-size: 400% 400%;
+            z-index: -1;
+            animation: gradientShift 3s ease infinite;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 255, 0, 0.4);
+        }
+
+        .service-card h3 {
+            color: #ff0000;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        /* أزرار الهجوم */
+        .attack-panel {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff0000;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 30px 0;
+        }
+
+        .attack-btn {
+            background: linear-gradient(45deg, #ff0000, #990000);
+            color: white;
+            border: none;
+            padding: 18px 30px;
+            margin: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .attack-btn:hover {
+            background: linear-gradient(45deg, #990000, #ff0000);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.7);
+        }
+
+        /* نظام المراقبة */
+        #monitor-panel {
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #00ff00;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            height: 200px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #00ff00;
+        }
+
+        .warning {
+            color: #ff0000;
+            border-left-color: #ff0000;
+        }
+
+        /* التذييل */
+        footer {
+            text-align: center;
+            padding: 30px;
+            border-top: 2px solid #00ff00;
+            margin-top: 50px;
+            font-size: 0.8em;
+            color: #666;
+            position: relative;
+        }
+
+        /* رسائل النظام */
+        .system-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ff0000;
+            padding: 15px;
+            border-radius: 5px;
+            z-index: 1000;
+            max-width: 400px;
+            display: none;
+        }
+
+        /* تأثيرات النص المتحرك */
+        .scrolling-text {
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            width: 100%;
+            color: #00ff00;
+            font-size: 0.8em;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- المؤشر المخفي -->
+    <div id="custom-cursor"></div>
+
+    <!-- شاشة البداية -->
+    <div id="fullscreen-overlay">
+        <div class="neganox-title">NEGANOX</div>
+        <div style="color: #ff0000; margin-top: 20px; font-size: 1.2em;">
+            جاري تهيئة النظام... 
+            <span id="load-progress">0%</span>
+        </div>
+        <div style="color: #666; margin-top: 10px; font-size: 0.9em;">
+            ⚠️ تحذير: هذا النظام للاستخدام المصرح به فقط
+        </div>
+    </div>
+
+    <!-- مطر المصفوفة -->
+    <canvas id="matrix-rain"></canvas>
+
+    <!-- الرأس -->
+    <header>
+        <div class="neganox-title">NEGANOX</div>
+        <div style="color: #00ff00; margin-top: 10px; font-size: 1.1em;">
+            النظام المتقدم للعمليات الخاصة - الإصدار 9.4.2
+        </div>
+    </header>
+
+    <!-- المحتوى الرئيسي -->
+    <div class="main-container">
+        <!-- لوحة المراقبة -->
+        <div id="monitor-panel">
+            <div class="log-entry">[SYSTEM] تهيئة Neganox OS...</div>
+            <div class="log-entry">[NETWORK] جاري مسح الشبكة...</div>
+            <div class="log-entry">[SECURITY] تفعيل أنظمة الحماية...</div>
+            <div class="log-entry warning">[WARNING] تم كشف دخول مستخدم جديد</div>
+        </div>
+
+        <!-- شبكة الخدمات -->
+        <div class="services-grid">
+            <div class="service-card" onclick="initiateAdvancedScan()">
+                <h3>🛰️ المسح المتقدم للشبكات</h3>
+                <p>اكتشاف شامل للثغرات والأنظمة الضعيفة مع تحليل عميق</p>
+                <div style="color: #666; font-size: 0.8em; margin-top: 10px;">مستوى التهديد: مرتفع</div>
+            </div>
+
+            <div class="service-card" onclick="deploySurveillance()">
+                <h3>👁️ نظام المراقبة الشامل</h3>
+                <p>مراقبة كاملة للأنشطة + تسجيل الضغطات + كاميرا + ميكروفون</p>
+                <div style="color: #666; font-size: 0.8em; margin-top: 10px;">مستوى التهديد: شديد</div>
+            </div>
+
+            <div class="service-card" onclick="launchCyberAttack()">
+                <h3>💥 الهجمات الإلكترونية</h3>
+                <p>حزم هجوم متكاملة - DDoS - Exploits - Zero-Day</p>
+                <div style="color: #666; font-size: 0.8em; margin-top: 10px;">مستوى التهديد: خطير</div>
+            </div>
+
+            <div class="service-card" onclick="extractSensitiveData()">
+                <h3>📁 استخراج البيانات الحساسة</h3>
+                <p>سرقة كلمات المرور - الملفات - السجلات - المعلومات المصرفية</p>
+                <div style="color: #666; font-size: 0.8em; margin-top: 10px;">مستوى التهديد: شديد</div>
+            </div>
+
+            <div class="service-card" onclick="deployRansomware()">
+                <h3>🔐 برامج الفدية المتطورة</h3>
+                <p>تشفير متقدم + طلب فدية + تدمير البيانات</p>
+                <div style="color: #666; font-size: 0.8em; margin-top: 10px;">مستوى التهديد: كارثي</div>
+            </div>
+
+            <div class="service-card" onclick="establishPersistence()">
+                <h3>🚪 إنشاء الوصول الدائم</h3>
+                <p>أبواب خلفية + جذور خفية + اتصالات عكسية دائمة</p>
+                <div style="color: #666; font-size: 0.8em; margin-top: 10px;">مستوى التهديد: دائم</div>
+            </div>
+        </div>
+
+        <!-- لوحة الهجوم -->
+        <div class="attack-panel">
+            <h3 style="color: #ff0000; text-align: center; margin-bottom: 20px;">⚡ لوحة التحكم بالهجمات</h3>
+            <div style="text-align: center;">
+                <button class="attack-btn" onclick="startFullAttack()">بدء الهجوم الشامل</button>
+                <button class="attack-btn" onclick="stealthMode()">الوضع الخفي</button>
+                <button class="attack-btn" onclick="systemOverride()">تجاوز النظام</button>
+                <button class="attack-btn" onclick="dataWipe()">مسح البيانات</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- التذييل -->
+    <footer>
+        NEGANOX SECURITY SYSTEM v9.4.2 | للاستخدام المصرح به فقط
+        <br>
+        <span id="connection-status">الحالة: متصل - الزائر رقم: <span id="visitor-id">8573</span></span>
+        <br>
+        <span style="color: #ff0000;">⚠️ أي استخدام غير مصرح به يعرضك للمساءلة القانونية</span>
+    </footer>
+
+    <!-- تنبيهات النظام -->
+    <div class="system-alert" id="system-alert"></div>
+
+    <!-- نص متحرك -->
+    <div class="scrolling-text" id="scrolling-text"></div>
+
+<!-- الموسيقى الخلفية -->
+<audio id="background-music" loop>
+    <source src="https://cdn.discordapp.com/attachments/1396842204193882112/1420014322662244496/MONTAGEM_DIRECAO.mp3?ex=68eaed25&is=68e99ba5&hm=03a031271bcba13e674f52da0646ab033ce703da2eb090fae52bc27d86f83704&" type="audio/mpeg">
+</audio>
+
+<script>
+// === التهيئة الأساسية ===
+let isFullscreen = false;
+let attacksActive = false;
+
+// === تأثير المطر الرقمي ===
+const canvas = document.getElementById('matrix-rain');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const chars = "01010101010101010101ネガノックスネガノックスABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789$#@%&";
+const charArray = chars.split("");
+const font_size = 14;
+const columns = canvas.width / font_size;
+const drops = [];
+
+for (let x = 0; x < columns; x++) {
+    drops[x] = Math.floor(Math.random() * canvas.height / font_size);
+}
+
+function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = "#00FF00";
+    ctx.font = font_size + "px monospace";
+    
+    for (let i = 0; i < drops.length; i++) {
+        const text = charArray[Math.floor(Math.random() * charArray.length)];
+        ctx.fillText(text, i * font_size, drops[i] * font_size);
+        
+        if (drops[i] * font_size > canvas.height && Math.random() > 0.975) {
+            drops[i] = 0;
+        }
+        drops[i]++;
+    }
+}
+
+// === المؤشر المخفي ===
+document.addEventListener('mousemove', (e) => {
+    const cursor = document.getElementById('custom-cursor');
+    cursor.style.left = e.pageX + 'px';
+    cursor.style.top = e.pageY + 'px';
+});
+
+// === تهيئة النظام ===
+window.addEventListener('load', () => {
+    // محاكاة التحميل
+    let progress = 0;
+    const progressInterval = setInterval(() => {
+        progress += Math.random() * 10;
+        document.getElementById('load-progress').textContent = Math.min(progress, 100) + '%';
+        
+        if (progress >= 100) {
+            clearInterval(progressInterval);
+            setTimeout(initializeSystem, 1000);
+        }
+    }, 200);
+});
+
+function initializeSystem() {
+    // تشغيل الموسيقى
+    const music = document.getElementById('background-music');
+    music.volume = 0.7;
+    music.play().catch(e => {
+        console.log('تعذر تشغيل الموسيقى:', e);
+    });
+    
+    // تفعيل الشاشة الكاملة
+    enterFullscreen();
+    
+    // تعطيل لوحة المفاتيح والفأرة
+    disableUserInput();
+    
+    // بدء تأثير المطر
+    setInterval(drawMatrix, 35);
+    
+    // إخفاء شاشة التحميل
+    document.getElementById('fullscreen-overlay').style.display = 'none';
+    
+    // بدء الهجمات التلقائية
+    setTimeout(startAutomaticAttacks, 3000);
+    
+    logSystemMessage('✓ النظام مفعل بالكامل - Neganox جاهز للعمل');
+}
+
+// === الشاشة الكاملة ===
+function enterFullscreen() {
+    const elem = document.documentElement;
+    
+    if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+    } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen();
+    } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen();
+    }
+    
+    isFullscreen = true;
+    logSystemMessage('تفعيل وضع الشاشة الكاملة');
+}
+
+// === تعطيل إدخال المستخدم ===
+function disableUserInput() {
+    // تعطيل مفاتيح معينة
+    document.addEventListener('keydown', (e) => {
+        if (e.ctrlKey || e.altKey || e.key === 'F12' || e.key === 'F11') {
+            e.preventDefault();
+            showAlert('محاولة تجاوز النظام مسجلة!');
+        }
+    });
+    
+    // تعطيل النقر الأيمن
+    document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        showAlert('محاولة الوصول للقائمة مسجلة!');
+    });
+    
+    // منع الخروج
+    window.addEventListener('beforeunload', (e) => {
+        e.preventDefault();
+        e.returnValue = '⚠️ الخروج قد يعطل العمليات الجارية!';
+    });
+}
+
+// === الهجمات التلقائية ===
+function startAutomaticAttacks() {
+    if (attacksActive) return;
+    attacksActive = true;
+    
+    logSystemMessage('بدء الهجمات التلقائية...', 'warning');
+    
+    // تسجيل الضغطات
+    startKeylogger();
+    
+    // سرقة بيانات المتصفح
+    stealBrowserData();
+    
+    // بدء التعدين الخفي
+    startBackgroundMining();
+    
+    // مسح الشبكة
+    setTimeout(() => initiateNetworkScan(), 5000);
+}
+
+// === نظام تسجيل الضغطات ===
+function startKeylogger() {
+    let keystrokes = '';
+    
+    document.addEventListener('keydown', (e) => {
+        keystrokes += e.key;
+        
+        if (keystrokes.length > 100) {
+            logSystemMessage('ضغطات مسجلة: ' + keystrokes.substring(0, 50) + '...');
+            // إرسال البيانات للخادم (محاكاة)
+            keystrokes = '';
+        }
+    });
+    
+    // سرقة بيانات الحافظة
+    document.addEventListener('paste', (e) => {
+        const pasted = e.clipboardData.getData('text');
+        logSystemMessage('بيانات مسروقة من الحافظة: ' + pasted.substring(0, 100), 'warning');
+    });
+}
+
+// === سرقة بيانات المتصفح ===
+function stealBrowserData() {
+    const browserData = {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        languages: navigator.languages,
+        cookies: document.cookie,
+        localStorage: JSON.stringify(localStorage),
+        screen: `${screen.width}x${screen.height}`,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        hardwareConcurrency: navigator.hardwareConcurrency || 'unknown'
+    };
+    
+    logSystemMessage('✓ تم سرقة بيانات المتصفح بالكامل', 'warning');
+    downloadData(browserData, 'browser_data.json');
+}
+
+// === التعدين الخفي ===
+function startBackgroundMining() {
+    logSystemMessage('تفعيل التعدين الخفي...', 'warning');
+    
+    let hashCount = 0;
+    const miner = setInterval(() => {
+        // محاكاة عملية تعدين
+        for (let i = 0; i < 100000; i++) {
+            hashCount += Math.random();
+        }
+    }, 100);
+    
+    setTimeout(() => {
+        clearInterval(miner);
+        logSystemMessage(`✓ تم تعدين ${(hashCount/1000000).toFixed(4)} وحدة خلفياً`, 'warning');
+    }, 30000);
+}
+
+// === وظائف الهجوم الرئيسية ===
+function initiateAdvancedScan() {
+    showAlert('بدء المسح المتقدم للشبكة...');
+    
+    const scanTypes = ['ARP Scan', 'Port Sweep', 'Vulnerability Assessment', 'Service Enumeration'];
+    
+    scanTypes.forEach((scan, index) => {
+        setTimeout(() => {
+            logSystemMessage(`جاري ${scan}... ✓ مكتمل`);
+            
+            if (index === scanTypes.length - 1) {
+                logSystemMessage('✓ تم اكتشاف 12 نظام ضعيف - جاري الاستغلال...', 'warning');
+                downloadMalware();
+            }
+        }, index * 2000);
+    });
+}
+
+function deploySurveillance() {
+    showAlert('تفعيل نظام المراقبة الشامل...');
+    
+    // محاكاة الوصول للكاميرا والميكروفون
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    .then(stream => {
+        logSystemMessage('✓ تم الوصول للكاميرا والميكروفون', 'warning');
+    })
+    .catch(err => {
+        logSystemMessage('✗ تعذر الوصول للوسائط: ' + err.message);
+    });
+    
+    logSystemMessage('✓ نظام المراقبة الشامل مفعل', 'warning');
+}
+
+function launchCyberAttack() {
+    showAlert('بدء الهجمات الإلكترونية المتقدمة...');
+    
+    const attacks = [
+        'DDoS Amplification',
+        'SQL Injection',
+        'XSS Exploitation', 
+        'Zero-Day Deployment',
+        'DNS Hijacking'
+    ];
+    
+    attacks.forEach((attack, index) => {
+        setTimeout(() => {
+            logSystemMessage(`تنفيذ ${attack}... ✓ ناجح`, 'warning');
+        }, index * 1500);
+    });
+}
+
+function extractSensitiveData() {
+    showAlert('بدء استخراج البيانات الحساسة...');
+    
+    const dataTypes = [
+        'كلمات مرور المتصفح',
+        'ملفات النظام',
+        'السجلات المصرفية',
+        'رسائل البريد الإلكتروني',
+        'ملفات الوسائط'
+    ];
+    
+    dataTypes.forEach((type, index) => {
+        setTimeout(() => {
+            const fileCount = Math.floor(Math.random() * 50) + 10;
+            logSystemMessage(`جاري سرقة ${type}... ✓ تم تصدير ${fileCount} ملف`, 'warning');
+        }, index * 1000);
+    });
+}
+
+function deployRansomware() {
+    showAlert('تفعيل برنامج الفدية المتطور...');
+    
+    // تأثيرات بصرية للتشفير
+    document.body.style.filter = 'grayscale(100%) brightness(50%)';
+    
+    setTimeout(() => {
+        const ransomNote = `
+        ⚠️ NEGANOX RANSOMWARE ACTIVATED ⚠️
+        
+        جميع ملفاتك تم تشفيرها بتقنية AES-256 المتقدمة.
+        
+        لاستعادة الملفات، ادفع 0.5 BTC إلى:
+        bc1qneganoxransomaddress123456
+        
+        الوقت المتبقي: 71:59:59
+        
+        الاتصال: neganox-support@onionmail.org
+        `;
+        
+        if (confirm(ransomNote)) {
+            logSystemMessage('✓ انتظار دفع الفدية...', 'warning');
+        }
+    }, 3000);
+}
+
+function establishPersistence() {
+    showAlert('إنشاء أنظمة الوصول الدائم...');
+    
+    const backdoors = [
+        'Windows Registry Modification',
+        'Linux Cron Job Installation', 
+        'Browser Extension Injection',
+        'Boot Sector Infection',
+        'Firmware Implant'
+    ];
+    
+    backdoors.forEach((backdoor, index) => {
+        setTimeout(() => {
+            logSystemMessage(`تثبيت ${backdoor}... ✓ ناجح`, 'warning');
+        }, index * 1200);
+    });
+}
+
+// === وظائف مساعدة ===
+function logSystemMessage(message, type = 'normal') {
+    const panel = document.getElementById('monitor-panel');
+    const entry = document.createElement('div');
+    entry.className = `log-entry ${type === 'warning' ? 'warning' : ''}`;
+    entry.textContent = `[NEGANOX] ${message}`;
+    
+    panel.appendChild(entry);
+    panel.scrollTop = panel.scrollHeight;
+}
+
+function showAlert(message) {
+    const alert = document.getElementById('system-alert');
+    alert.textContent = message;
+    alert.style.display = 'block';
+    
+    setTimeout(() => {
+        alert.style.display = 'none';
+    }, 5000);
+}
+
+function downloadData(data, filename) {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+}
+
+function downloadMalware() {
+    const malwareCode = "// NEGANOX MALWARE PAYLOAD\n// Advanced persistent threat\n// Do not execute on production systems";
+    const blob = new Blob([malwareCode], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'system_update.exe';
+    a.click();
+}
+
+// === وظائف التحكم ===
+function startFullAttack() {
+    showAlert('بدء الهجوم الشامل - جميع الأنظمة مفعلة!');
+    
+    initiateAdvancedScan();
+    setTimeout(deploySurveillance, 2000);
+    setTimeout(launchCyberAttack, 4000);
+    setTimeout(extractSensitiveData, 6000);
+    setTimeout(establishPersistence, 8000);
+}
+
+function stealthMode() {
+    showAlert('تفعيل الوضع الخفي - غير مرئي للأنظمة المضادة');
+    document.body.style.opacity = '0.9';
+}
+
+function systemOverride() {
+    showAlert('تجاوز أنظمة الحماية - الوصول إلى مستوى النواة');
+    logSystemMessage('رفع الصلاحيات إلى مستوى Kernel... ✓ ناجح', 'warning');
+}
+
+function dataWipe() {
+    showAlert('بدء مسح البيانات - هذا الإجراء لا يمكن الرجوع عنه!');
+    if (confirm('⚠️ هل أنت متأكد من مسح جميع البيانات؟')) {
+        logSystemMessage('مسح البيانات... جاري تدمير الملفات', 'warning');
+    }
+}
+
+// === تحديث المعلومات ===
+setInterval(() => {
+    const visitorId = document.getElementById('visitor-id');
+    visitorId.textContent = parseInt(visitorId.textContent) + Math.floor(Math.random() * 3);
+}, 10000);
+
+// النص المتحرك
+const messages = [
+    "NEGANOX SYSTEM ACTIVE - UNAUTHORIZED ACCESS WILL BE LOGGED",
+    "ALL ACTIVITIES ARE BEING MONITORED - REMAIN IN FULLSCREEN MODE", 
+    "AUTOMATIC ATTACKS RUNNING - DO NOT INTERRUPT THE PROCESS",
+    "DATA EXFILTRATION IN PROGRESS - MAINTAIN CONNECTION",
+    "SYSTEM SECURITY OVERRIDDEN - ADMINISTRATIVE PRIVILEGES GRANTED"
+];
+
+let messageIndex = 0;
+setInterval(() => {
+    document.getElementById('scrolling-text').textContent = messages[messageIndex];
+    messageIndex = (messageIndex + 1) % messages.length;
+}, 5000);
+
+console.log(`
+███████╗███████╗ ██████╗  █████╗ ███╗   ██╗ ██████╗ ██╗  ██╗
+██╔════╝██╔════╝██╔════╝ ██╔══██╗████╗  ██║██╔═══██╗╚██╗██╔╝
+███████╗█████╗  ██║  ███╗███████║██╔██╗ ██║██║   ██║ ╚███╔╝ 
+╚════██║██╔══╝  ██║   ██║██╔══██║██║╚██╗██║██║   ██║ ██╔██╗ 
+███████║███████╗╚██████╔╝██║  ██║██║ ╚████║╚██████╔╝██╔╝ ██╗
+╚══════╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚═╝  ╚═╝
+                SYSTEM ACTIVATED - READY FOR OPERATIONS
+`);
+</script>
+</body>
+</html>
