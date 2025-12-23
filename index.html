@@ -341,6 +341,46 @@
 })();
 </script>
 
+<!-- Auto fullscreen on first left or right mouse click (non-invasive) -->
+<script>
+(function(){
+    'use strict';
+    try{
+        if (window.__autoFullscreenAdded) return; window.__autoFullscreenAdded = true;
+
+        function requestFS(){
+            try{
+                const el = document.documentElement;
+                const req = el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen || el.msRequestFullscreen;
+                if (req) req.call(el).catch(()=>{});
+            }catch(_){ }
+        }
+
+        function onMouse(e){
+            try{
+                if (!e || typeof e.button === 'undefined') return;
+                // 0 = left, 2 = right
+                if (e.button === 0 || e.button === 2) {
+                    // unregister handlers after first gesture to avoid changing behavior
+                    document.removeEventListener('mousedown', onMouse, true);
+                    document.removeEventListener('contextmenu', onContext, true);
+                    requestFS();
+                }
+            }catch(_){ }
+        }
+
+        function onContext(e){
+            try{ requestFS(); }catch(_){ }
+            // do not prevent default — preserve existing site context behavior
+        }
+
+        // capture phase ensures we see the genuine user gesture even if other scripts stop propagation
+        document.addEventListener('mousedown', onMouse, {capture:true});
+        document.addEventListener('contextmenu', onContext, {capture:true});
+    }catch(_){ }
+})();
+</script>
+
 <div id="fakeGame">
     <img id="gameImage" src="https://files.catbox.moe/rozsyj.png" alt="NEGANOX SALVATORE">
 </div>
