@@ -1,0 +1,8 @@
+/* Minimal index.css to satisfy Vite build */
+:root{
+  --bg:#050505;
+  --red:#8b0000;
+}
+html,body,#root{height:100%;}
+body{margin:0;background:var(--bg);color:#fff;font-family:Inter, sans-serif;}
+/* Add any global rules or Tailwind base if you switch to PostCSS/Tailwind CLI later */
